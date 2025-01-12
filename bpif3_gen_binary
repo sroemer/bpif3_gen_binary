@@ -756,7 +756,7 @@ def main(argv):
         description='Parse JSON config file, collect related files, and build image file.',
     )
     parser.add_argument('-c',   dest = 'json_file',        required = True,     help = 'configuration json file')
-    parser.add_argument('-o',   dest = 'output_file',      default = 'img.bin', help = 'output file')
+    parser.add_argument('-o',   dest = 'output_file',      required = True,     help = 'output file')
     parser.add_argument('-d',   dest = 'output_directory', default = './build', help = 'output directory')
 
     args = parser.parse_args()
