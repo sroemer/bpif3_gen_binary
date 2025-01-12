@@ -4,6 +4,7 @@ import os
 import sys
 import time
 import argparse
+from pathlib import Path
 import binascii
 import struct
 # import yaml
@@ -754,19 +755,23 @@ def main(argv):
     parser = argparse.ArgumentParser(
         description='Parse JSON config file, collect related files, and build image file.',
     )
-    parser.add_argument('-c',   dest = 'json_file',     required = True,    help = 'configuration json file')
-    parser.add_argument('-o',   dest = 'output_file',   default = 'img.bin', help = 'output file')
+    parser.add_argument('-c',   dest = 'json_file',        required = True,     help = 'configuration json file')
+    parser.add_argument('-o',   dest = 'output_file',      default = 'img.bin', help = 'output file')
+    parser.add_argument('-d',   dest = 'output_directory', default = './build', help = 'output directory')
 
     args = parser.parse_args()
     json_file = args.json_file
     output_file = args.output_file
+    output_directory = args.output_directory
+    output_path = output_directory + "/" + output_file
 
     log = Logger()
     # log = common_decorator.Logger('debug')
     image = ImageBinary(log)
     config_info_dict = image.extract_config(json_file)
     if config_info_dict and image.verify_config(config_info_dict):
-        image.build_iamge(config_info_dict, output_file)
+        Path(output_directory).mkdir(parents=True, exist_ok=True)
+        image.build_iamge(config_info_dict, output_path)
 
 
 if __name__ == '__main__':
